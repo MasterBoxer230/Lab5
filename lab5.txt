@@ -1,0 +1,93 @@
+using System;
+using System.Globalization;
+
+namespace BuildingApp
+{
+    public class Building
+    {
+        public string City { get; set; }
+        public string Type { get; set; }
+        public double Height { get; set; }
+        public bool IsPrivate { get; set; }
+        public int YearOfFounding { get; set; }
+        public string Street { get; set; }
+        public double MaintenanceCost { get; set; }
+        public int NumberOfFloors { get; set; } 
+
+        public double GetMaintenanceCostPerYear()
+        {
+            return MaintenanceCost / (DateTime.Now.Year - YearOfFounding);
+        }
+    }
+
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.Write("Введiть кiлькiсть будiвель: ");
+            int numberOfBuildings = int.Parse(Console.ReadLine());
+
+            Building[] buildings = new Building[numberOfBuildings];
+
+            for (int i = 0; i < numberOfBuildings; i++)
+            {
+                Console.WriteLine($"\nВведення даних для будiвлi #{i + 1}:");
+                buildings[i] = InputBuildingData();
+            }
+
+            Console.WriteLine("\nIнформацiя про всi будiвлi:");
+            for (int i = 0; i < numberOfBuildings; i++)
+            {
+                Console.WriteLine($"\nБудiвля #{i + 1}:");
+                DisplayBuildingInfo(buildings[i]);
+            }
+
+            Console.ReadLine();
+        }
+
+        static Building InputBuildingData()
+        {
+            Building building = new Building();
+
+            Console.Write("Введiть назву мiста: ");
+            building.City = Console.ReadLine();
+
+            Console.Write("Введiть тип будiвлi: ");
+            building.Type = Console.ReadLine();
+
+            Console.Write("Введiть висоту будiвлi (м): ");
+            building.Height = double.Parse(Console.ReadLine(), CultureInfo.InvariantCulture);
+
+            Console.Write("Чи є будiвля приватною? (y/n): ");
+            building.IsPrivate = Console.ReadKey().Key == ConsoleKey.Y;
+            Console.WriteLine();
+
+            Console.Write("Введiть рiк заснування: ");
+            building.YearOfFounding = int.Parse(Console.ReadLine());
+
+            Console.Write("Введiть назву вулицi: ");
+            building.Street = Console.ReadLine();
+
+            Console.Write("Введiть вартiсть обслуговування: ");
+            building.MaintenanceCost = double.Parse(Console.ReadLine(), CultureInfo.InvariantCulture);
+
+            Console.Write("Введiть кiлькiсть поверхiв: ");
+            building.NumberOfFloors = int.Parse(Console.ReadLine());
+
+            return building;
+        }
+
+        static void DisplayBuildingInfo(Building building)
+        {
+            Console.WriteLine($"Місто: {building.City}");
+            Console.WriteLine($"Тип: {building.Type}");
+            Console.WriteLine($"Висота: {building.Height} м");
+            Console.WriteLine($"Приватна: {(building.IsPrivate ? "Так" : "Ні")}");
+            Console.WriteLine($"Рік заснування: {building.YearOfFounding}");
+            Console.WriteLine($"Вулиця: {building.Street}");
+            Console.WriteLine($"Вартість обслуговування: {building.MaintenanceCost:C}");
+            Console.WriteLine($"Щорічна вартість обслуговування: {building.GetMaintenanceCostPerYear():C}");
+            Console.WriteLine($"Кількість поверхів: {building.NumberOfFloors}");
+        }
+    }
+}
